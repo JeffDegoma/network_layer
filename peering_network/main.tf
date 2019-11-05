@@ -9,7 +9,7 @@ resource "aws_vpc" "dev" {
 
 
 resource "aws_internet_gateway" "igw" {
-    vpc_id          =    "${aws_vpc.dev.id}"
+    vpc_id          =    "${aws_vpc.dev.id}" 
 }
 
  ################# Public Subnets #############
@@ -36,8 +36,8 @@ resource "aws_route_table" "public_route" {
   vpc_id            =   "${aws_vpc.dev.id}"
 
   route {
-      cidr_block    =   "0.0.0.0/0"
-      gateway_id    =   "${aws_internet_gateway.igw.id}"
+      cidr_block    =   "0.0.0.0/0" //destination
+      gateway_id    =   "${aws_internet_gateway.igw.id}" // target
   }
   tags {
       Name          =   "public_route_table"
