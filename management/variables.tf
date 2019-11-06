@@ -1,12 +1,12 @@
 variable "subnet_cidr_public" {
   type              =   "list" 
-  default           =   ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
+  default           =   ["10.20.1.0/24"]
 }
 
 
 variable "subnet_cidr_private" {
   type              = "list"
-  default           = [ "10.20.4.0/24", "10.20.5.0/24", "10.20.6.0/24"]
+  default           = [ "10.20.4.0/24"]
 }
 
 
@@ -15,7 +15,7 @@ variable "vpc_cidr" {
 }
 
 variable "environment" {
-    default =   "dev"
+    default =   "management"
 }
 
 variable "cidr_range" {

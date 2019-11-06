@@ -1,5 +1,5 @@
 
-resource "aws_vpc" "dev" {
+resource "aws_vpc" "management" {
   cidr_block        =    "${var.vpc_cidr}"
 
   tags {
@@ -9,13 +9,13 @@ resource "aws_vpc" "dev" {
 
 
 resource "aws_internet_gateway" "igw" {
-    vpc_id          =    "${aws_vpc.dev.id}" //attach to vpc
+    vpc_id          =    "${aws_vpc.management.id}" //attach to vpc
 }
 
  ################# Public Subnets #############
-resource "aws_subnet" "public" {//3 PUBLIC subnets in DEV VPC across 3 availability zones
+resource "aws_subnet" "public" {//3 PUBLIC subnets in management VPC across 3 availability zones
     count           =   "${length(var.subnet_cidr_public)}" //length of subnets defined
-    vpc_id          =   "${aws_vpc.dev.id}"
+    vpc_id          =   "${aws_vpc.management.id}"
     cidr_block      =   "${element(var.subnet_cidr_public,count.index)}"
     availability_zone   =  "${element(var.az, count.index)}"
     
@@ -23,9 +23,9 @@ resource "aws_subnet" "public" {//3 PUBLIC subnets in DEV VPC across 3 availabil
 
 
  ################# Private Subnets #############
-resource "aws_subnet" "private" {//3 PRIVATE subnets in DEV VPC across 3 availability zones
+resource "aws_subnet" "private" {//3 PRIVATE subnets in management VPC across 3 availability zones
     count           =   "${length(var.subnet_cidr_private)}"
-    vpc_id          =   "${aws_vpc.dev.id}"
+    vpc_id          =   "${aws_vpc.management.id}"
     cidr_block      =   "${element(var.subnet_cidr_private,count.index)}"
     availability_zone   =  "${element(var.az, count.index)}"
     
@@ -33,7 +33,7 @@ resource "aws_subnet" "private" {//3 PRIVATE subnets in DEV VPC across 3 availab
 
 ############# Route Tables #############
 resource "aws_route_table" "public_route" {
-  vpc_id            =   "${aws_vpc.dev.id}"
+  vpc_id            =   "${aws_vpc.management.id}"
 
   route {
       cidr_block    =   "0.0.0.0/0" //destination
@@ -46,7 +46,7 @@ resource "aws_route_table" "public_route" {
 
 
 resource "aws_route_table" "private_route" {
-    vpc_id          =   "${aws_vpc.dev.id}"
+    vpc_id          =   "${aws_vpc.management.id}"
 
     route {
         cidr_block  =   "0.0.0.0/0"
